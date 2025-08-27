@@ -55,7 +55,7 @@ A comprehensive web-based platform for automated fact verification and document 
 
 ## 🚀 Usage
 
-### Starting the Application
+### Local Development
 
 1. **Run the web interface**
    ```bash
@@ -64,6 +64,75 @@ A comprehensive web-based platform for automated fact verification and document 
 
 2. **Access the application**
    Open your browser and navigate to `http://localhost:8000`
+
+### Docker Deployment
+
+1. **Build and run with Docker**
+   ```bash
+   docker build -t veridoc-ai .
+   docker run -p 8000:8000 -e OPENAI_API_KEY=your_key veridoc-ai
+   ```
+
+2. **Using Docker Compose**
+   ```bash
+   docker-compose up --build
+   ```
+
+## ☁️ Azure App Service Deployment
+
+### Prerequisites
+- Azure subscription
+- Azure CLI installed
+- GitHub repository with the project
+
+### Setup Steps
+
+1. **Create Azure App Service**
+   ```bash
+   # Create resource group
+   az group create --name veridoc-rg --location eastus
+   
+   # Create App Service plan
+   az appservice plan create --name veridoc-plan --resource-group veridoc-rg --sku B1 --is-linux
+   
+   # Create web app for staging
+   az webapp create --name veridoc-staging --resource-group veridoc-rg --plan veridoc-plan --runtime "PYTHON|3.11"
+   
+   # Create web app for production
+   az webapp create --name veridoc-prod --resource-group veridoc-rg --plan veridoc-plan --runtime "PYTHON|3.11"
+   ```
+
+2. **Configure GitHub Secrets**
+   Add these secrets to your GitHub repository settings:
+   - `AZURE_CREDENTIALS`: Service principal credentials (JSON)
+   - `AZURE_APP_SERVICE_NAME_STAGING`: Your staging app service name
+   - `AZURE_APP_SERVICE_NAME_PRODUCTION`: Your production app service name
+   - `AZURE_RESOURCE_GROUP`: Your Azure resource group name
+   - `OPENAI_API_KEY`: Your OpenAI API key
+   - `OPENAI_BASE_URL`: Your OpenAI API base URL
+
+3. **Generate Azure Service Principal**
+   ```bash
+   az ad sp create-for-rbac --name "veridoc-deploy" --role contributor \
+     --scopes /subscriptions/{subscription-id}/resourceGroups/veridoc-rg \
+     --sdk-auth
+   ```
+
+4. **Configure App Settings**
+   ```bash
+       # Configure staging environment
+    az webapp config appsettings set --name veridoc-staging --resource-group veridoc-rg \
+      --settings WEBSITES_PORT=8001 SCM_DO_BUILD_DURING_DEPLOYMENT=true
+    
+    # Configure production environment
+    az webapp config appsettings set --name veridoc-prod --resource-group veridoc-rg \
+      --settings WEBSITES_PORT=8001 SCM_DO_BUILD_DURING_DEPLOYMENT=true
+   ```
+
+### Deployment Flow
+- **Staging**: Deploys automatically when code is pushed to `develop` branch
+- **Production**: Deploys automatically when code is pushed to `main` branch
+- **Manual**: Use GitHub Actions "workflow_dispatch" trigger for manual deployments
 
 ### Basic Workflow
 

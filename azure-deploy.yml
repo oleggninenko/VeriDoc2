@@ -1,0 +1,25 @@
+# Azure App Service Configuration
+# This file contains deployment settings for Azure App Service
+
+# Python runtime configuration
+runtime: python
+runtime_version: 3.11
+
+# Startup command
+startup_command: uvicorn simple_web_interface_v2:app --host 0.0.0.0 --port 8001
+
+# Environment variables
+environment_variables:
+  - name: WEBSITES_PORT
+    value: "8001"
+  - name: SCM_DO_BUILD_DURING_DEPLOYMENT
+    value: "true"
+  - name: PYTHON_VERSION
+    value: "3.11"
+
+# Build configuration
+build_config:
+  - name: PYTHON_VERSION
+    value: "3.11"
+  - name: PIP_CACHE_DIR
+    value: "/tmp/pip-cache"
