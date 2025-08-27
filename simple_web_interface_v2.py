@@ -352,6 +352,16 @@ async def process_verification_background(selected_caches: list, statements_file
                                    log=f"Deep analysis failed: {str(e)}")
         logger.error(f"Deep analysis error: {e}")
 
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for monitoring"""
+    return {
+        "status": "healthy",
+        "timestamp": time.time(),
+        "version": "1.0.0",
+        "service": "VeriDoc AI"
+    }
+
 @app.get("/", response_class=HTMLResponse)
 async def get_main_page():
     """Serve the main HTML page"""
