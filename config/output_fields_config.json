@@ -1,0 +1,37 @@
+[
+  {
+    "id": "par_number",
+    "name": "Paragraph Number",
+    "description": "Paragraph number from the statement (fixed column)",
+    "enabled": true,
+    "fixed": true
+  },
+  {
+    "id": "par_context",
+    "name": "Statement",
+    "description": "Statement content from the input file (fixed column)",
+    "enabled": true,
+    "fixed": true
+  },
+  {
+    "id": "is_accurate",
+    "name": "Document",
+    "description": "If the statement references to any documents (agreements, trusts, court decisions, correspondence, etc.) return documents names or descriptions",
+    "enabled": true,
+    "fixed": false
+  },
+  {
+    "id": "field_1756803554789",
+    "name": "Fact/Finding",
+    "description": "Check the statement if there are Facts or Findings in respect of Primecap only in this particular statement? (Answer short Fact/Finding))",
+    "enabled": true,
+    "fixed": false
+  },
+  {
+    "id": "field_1756803586927",
+    "name": "Findings",
+    "description": "Check the statement if there are Facts or Findings in respect of Primecap only in this particular statement? List the findings in respect of Primecap in (a),(b),(c) list format",
+    "enabled": true,
+    "fixed": false
+  }
+]

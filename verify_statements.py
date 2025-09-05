@@ -454,44 +454,73 @@ def read_statements(path: str) -> List[str]:
 					text.append(line)
 	elif path.lower().endswith((".xlsx", ".xls")):
 		df = pd.read_excel(path)
-		# Look for specific columns for court judgment format
-		par_col = None
-		content_col = None
 		
-		# Find Par and Content columns (case insensitive)
-		for c in df.columns:
-			col_lower = str(c).strip().lower()
-			if col_lower == "par":
-				par_col = c
-			elif col_lower == "content":
-				content_col = c
+		# Validate minimum column requirement
+		if len(df.columns) < 2:
+			raise RuntimeError(f"Excel file must contain at least 2 columns. Found only {len(df.columns)} column(s).")
 		
-		if par_col is None or content_col is None:
-			# Fallback to heuristics if specific columns not found
-			for c in df.columns:
-				if str(c).strip().lower() in ("statement", "statements", "claim", "text"):
-					content_col = c
-					break
-			if content_col is None:
-				for c in df.columns:
-					if df[c].notna().any():
-						content_col = c
-						break
-			if content_col is None:
-				raise RuntimeError("No 'Content' column found in the Excel statements file")
+		# Use column positions instead of names
+		# Column 1 (index 0) = Paragraph number
+		# Column 2 (index 1) = Statement content
+		par_col = df.columns[0]  # First column
+		content_col = df.columns[1]  # Second column
+		
+		# Validate paragraph number column (first column)
+		invalid_par_rows = []
+		for idx, row in df.iterrows():
+			par_value = row[par_col]
+			if pd.isna(par_value) or str(par_value).strip() == "":
+				invalid_par_rows.append(idx + 1)  # +1 for 1-based row numbers
+		
+		if invalid_par_rows:
+			raise RuntimeError(f"Paragraph number column (Column 1) contains empty values in rows: {invalid_par_rows}. All paragraph numbers must be provided.")
+		
+		# Additional validation: Check for reasonable paragraph number formats
+		# Allow alphanumeric values (e.g., "1", "1.1", "A1", "Para 1")
+		invalid_format_rows = []
+		for idx, row in df.iterrows():
+			par_value = str(row[par_col]).strip()
+			# Check if paragraph number contains only alphanumeric characters, dots, spaces, and common separators
+			if not re.match(r'^[a-zA-Z0-9\s\.\-_\(\)]+$', par_value):
+				invalid_format_rows.append(idx + 1)
+		
+		if invalid_format_rows:
+			raise RuntimeError(f"Paragraph number column (Column 1) contains invalid characters in rows: {invalid_format_rows}. Paragraph numbers should contain only letters, numbers, dots, spaces, hyphens, underscores, and parentheses.")
+		
+		# Validate statement content column (second column)
+		empty_content_rows = []
+		for idx, row in df.iterrows():
+			content_value = row[content_col]
+			if pd.isna(content_value) or str(content_value).strip() == "":
+				empty_content_rows.append(idx + 1)  # +1 for 1-based row numbers
+		
+		if empty_content_rows:
+			raise RuntimeError(f"Statement content column (Column 2) contains empty values in rows: {empty_content_rows}. All statements must have content.")
+		
+		# Process the data using the first two columns
+		text = []
+		for idx, row in df.iterrows():
+			par_value = str(row[par_col]).strip()
+			content_value = str(row[content_col]).strip()
 			
-			# For non-court format, just return content
-			text = [str(v).strip() for v in df[content_col].tolist() if pd.notna(v) and str(v).strip()]
-		else:
-			# Court judgment format - return structured data
-			text = []
-			for idx, row in df.iterrows():
-				if pd.notna(row[content_col]) and str(row[content_col]).strip():
-					text.append({
-						'par': str(row[par_col]).strip() if pd.notna(row[par_col]) else str(idx + 1),
-						'content': str(row[content_col]).strip(),
-						'index': idx
-					})
+			# Skip rows with empty content (additional validation)
+			if content_value:
+				text.append({
+					'par': par_value,
+					'content': content_value,
+					'index': idx
+				})
+		
+		# Log processing information
+		print(f"Processed Excel file with {len(df.columns)} columns")
+		print(f"Using Column 1 ('{par_col}') for paragraph numbers")
+		print(f"Using Column 2 ('{content_col}') for statement content")
+		print(f"Successfully processed {len(text)} statements")
+		
+		# Warn about ignored columns if more than 2 exist
+		if len(df.columns) > 2:
+			ignored_columns = [col for col in df.columns[2:]]
+			print(f"Warning: Ignoring {len(ignored_columns)} additional columns: {', '.join(ignored_columns)}")
 	else:
 		raise RuntimeError("Unsupported statements file format. Use .txt or .xlsx")
 	return text
@@ -506,13 +535,35 @@ def excel_prepare_writer(path: str, headers: List[str]) -> Tuple[str, Workbook]:
 	wb.save(path)
 	return path, wb
 
-def excel_prepare_court_writer(path: str) -> Tuple[str, Workbook]:
-	headers = ["Analysed Par number", "Par Context", "Is Accurate", "Degree of Accuracy", "Inaccuracy Type", "Description"]
+def excel_prepare_court_writer(path: str, output_fields: List[Dict] = None) -> Tuple[str, Workbook]:
+	"""
+	Prepare Excel writer with fixed first two columns and dynamic output fields.
+	
+	Fixed columns:
+	- Column 1: Paragraph Number (from input Column 1)
+	- Column 2: Statement (from input Column 2)
+	
+	Dynamic columns: Based on output_fields configuration
+	"""
+	# Fixed first two columns - these cannot be changed
+	fixed_headers = ["Paragraph Number", "Statement"]
+	
+	# Dynamic headers from output_fields
+	dynamic_headers = []
+	if output_fields:
+		for field in output_fields:
+			if field.get("enabled", True) and field.get("id") not in ["par_number", "par_context"]:
+				# Use the field name as the column header
+				dynamic_headers.append(field.get("name", field.get("id")))
+	
+	# Combine fixed and dynamic headers
+	all_headers = fixed_headers + dynamic_headers
+	
 	# Always create new workbook or overwrite existing one
 	wb = Workbook()
 	ws = wb.active
-	ws.title = "Court Analysis Results"
-	ws.append(headers)
+	ws.title = "Verification Results"
+	ws.append(all_headers)
 	
 	# Try to save with error handling
 	try:
@@ -1480,6 +1531,7 @@ def run(
 	top_k: int,
 	max_snippet_chars: int,
 	use_caches: bool = False,
+	output_fields: List[Dict] = None,
 ) -> None:
 	# Global variable to track current Excel path
 	global current_excel_path
@@ -1531,7 +1583,7 @@ def run(
 
 	if is_court_format:
 		# Court judgment analysis with parallel processing
-		output_path, _ = excel_prepare_court_writer(output_excel)
+		output_path, _ = excel_prepare_court_writer(output_excel, output_fields)
 		current_excel_path = output_path  # Update global path
 		checkpoint = load_court_checkpoint(checkpoint_path)
 		processed = set(checkpoint.keys())
@@ -1556,16 +1608,26 @@ def run(
 		print(f"Writing {len(results)} results to Excel and checkpoint...")
 		for i, result in enumerate(tqdm(results, desc="Writing results", unit="result")):
 			stmt = result['statement']
+			
+			# Build row with fixed first two columns
+			row_data = [stmt['par'], stmt['content']]  # Fixed columns: Paragraph Number, Statement
+			
+			# Add dynamic columns based on output fields
+			if output_fields:
+				for field in output_fields:
+					if field.get("enabled", True) and field.get("id") not in ["par_number", "par_context"]:
+						# Get the field value from the result
+						field_value = result['result'].get(field.get("id"), "")
+						row_data.append(field_value)
+			
+			excel_append_row(current_excel_path, row_data)
+			
+			# For checkpoint, still use the old format for backward compatibility
 			verdict = result['result'].get("verdict", "not accurate")
 			degree_of_accuracy = result['result'].get("degree_of_accuracy", 5)
 			inaccuracy_type = result['result'].get("inaccuracy_type", "none")
 			description = result['result'].get("description", "")
-			
-			# Include the original paragraph content
-			par_context = stmt['content']
-			
-			excel_append_row(current_excel_path, [stmt['par'], par_context, verdict, degree_of_accuracy, inaccuracy_type, description])
-			append_court_checkpoint(checkpoint_path, stmt['par'], par_context, verdict, degree_of_accuracy, inaccuracy_type, description)
+			append_court_checkpoint(checkpoint_path, stmt['par'], stmt['content'], verdict, degree_of_accuracy, inaccuracy_type, description)
 		
 		print(f"Processed {len(results)} statements in parallel.")
 		

@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "PB London Case": {
+      "name": "PB London Case",
+      "created_at": 1756977851.018997,
+      "description": "Privatbank vs IK, GB and D3-D8"
+    },
+    "PB Cyprus Case": {
+      "name": "PB Cyprus Case",
+      "description": "",
+      "created_at": 1756986911.361004
+    }
+  },
+  "current_project": "PB London Case"
+}

@@ -1,4 +1,4 @@
-body {
+﻿body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
@@ -19,6 +19,116 @@ body {
     color: white;
     padding: 20px;
     text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100px;
+}
+
+/* Project Selection Styles */
+.current-project-display {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.project-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.project-name-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    min-width: 200px;
+    justify-content: space-between;
+}
+
+.project-name-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.project-name {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.project-name-button.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.project-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.project-dropdown.hidden {
+    display: none;
+}
+
+.project-dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    color: #374151;
+    font-size: 14px;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.2s ease;
+    text-align: left;
+}
+
+.project-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.project-dropdown-item:hover {
+    background-color: #f9fafb;
+}
+
+.project-dropdown-item.active {
+    background-color: #dbeafe;
+    color: #1e40af;
+    font-weight: 600;
+}
+
+.project-dropdown-item.active::after {
+    content: " ✓";
+    color: #059669;
+    font-weight: bold;
 }
 
 .content {
@@ -72,24 +182,28 @@ body {
     flex: 1;
     border: 2px solid #e5e7eb;
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px;
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     display: flex;
     flex-direction: column;
     position: relative;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .zone-right {
     flex: 1;
     border: 2px solid #e5e7eb;
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px;
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     display: flex;
     flex-direction: column;
     position: relative;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .zone h3 {
@@ -640,6 +754,13 @@ body {
     cursor: default !important;
 }
 
+.btn.saved {
+    background: #059669 !important;
+    color: white !important;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}
+
 .processing-note {
     text-align: center;
     color: #6b7280;
@@ -738,6 +859,7 @@ body {
 .par-content-text {
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     white-space: normal;
@@ -745,6 +867,7 @@ body {
 
 .par-content-text.expanded {
     -webkit-line-clamp: unset;
+    line-clamp: unset;
 }
 
 .cache-table {
@@ -976,6 +1099,7 @@ body {
     max-width: 100%;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     white-space: normal;
     flex: 1;
@@ -985,6 +1109,7 @@ body {
     white-space: normal;
     overflow: visible;
     -webkit-line-clamp: unset;
+    line-clamp: unset;
 }
 
 .tech-info-grid {
@@ -1148,6 +1273,10 @@ body {
     background-color: rgba(0,0,0,0.5);
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
+}
+
+.modal:not(.hidden) {
+    display: block;
 }
 
 .modal-content {
@@ -1463,3 +1592,1363 @@ body {
 .mobile-category-files.hidden {
     display: none;
 }
+
+/* Mobile-specific styles */
+.mobile-container {
+    max-width: 100%;
+    padding: 10px;
+    margin: 0;
+}
+
+.mobile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.mobile-header h1 {
+    font-size: 24px;
+    margin: 0 0 5px 0;
+}
+
+.mobile-header p {
+    font-size: 14px;
+    margin: 0;
+    color: #666;
+}
+
+.mobile-section {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.mobile-section h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.mobile-section p {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.mobile-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.mobile-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.2s;
+}
+
+.mobile-btn.primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.mobile-btn.primary:hover {
+    background-color: #0056b3;
+}
+
+.mobile-btn.secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.mobile-btn.secondary:hover {
+    background-color: #545b62;
+}
+
+.mobile-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.mobile-conversation {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.mobile-message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.mobile-message.user {
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196f3;
+}
+
+.mobile-message.assistant {
+    background-color: #f3e5f5;
+    border-left: 4px solid #9c27b0;
+}
+
+.mobile-message .timestamp {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.mobile-message .content {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.mobile-knowledge-list {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.mobile-knowledge-item {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.mobile-knowledge-item:last-child {
+    border-bottom: none;
+}
+
+.mobile-file-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.mobile-file-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.mobile-category-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mobile-empty-state {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.mobile-category-group {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.mobile-category-header {
+    background: #f5f5f5;
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.mobile-category-files {
+    background: white;
+}
+
+.mobile-category-files .mobile-knowledge-item {
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0;
+}
+
+.mobile-category-files .mobile-knowledge-item:last-child {
+    border-bottom: none;
+}
+
+.mobile-category-header {
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mobile-category-header:hover {
+    background: #e8e8e8;
+}
+
+.mobile-category-toggle {
+    font-size: 12px;
+    color: #666;
+    transition: transform 0.2s ease;
+}
+
+.mobile-category-header.collapsed .mobile-category-toggle {
+    transform: rotate(-90deg);
+}
+
+.mobile-confidence {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+.mobile-key-points {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.mobile-key-points ul {
+    margin: 4px 0;
+    padding-left: 20px;
+}
+
+.mobile-key-points li {
+    margin-bottom: 2px;
+    color: #666;
+}
+
+.mobile-conversation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.mobile-conversation-header h4 {
+    margin: 0;
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+}
+
+.mobile-conversation-copy-btn {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #6b7280;
+    transition: all 0.2s ease;
+    opacity: 0.8;
+    margin-left: 10px;
+}
+
+.mobile-conversation-copy-btn:hover {
+    background: #e5e7eb;
+    opacity: 1;
+}
+
+.mobile-conversation-copy-btn.copied {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+/* Verification Parameters Styles */
+.verification-group {
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.verification-group h4 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+.parameters-section {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.parameters-section h5 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.parameter-group {
+    margin-bottom: 15px;
+}
+
+.parameter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+}
+
+.parameter-group .form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    box-sizing: border-box;
+}
+
+.parameter-group .form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.parameter-group .form-control:disabled,
+.parameter-group .form-control[readonly] {
+    background-color: #f5f5f5;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.7;
+    border-color: #ccc;
+}
+
+.parameter-group small {
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #666;
+}
+
+.parameter-group input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.parameter-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    box-sizing: border-box;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* Column Requirements Styles */
+.column-requirements {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.column-requirements p {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 14px;
+}
+
+.column-requirements ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #495057;
+    font-size: 13px;
+}
+
+.column-requirements li {
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.column-requirements strong {
+    color: #2c3e50;
+}
+
+.column-requirements em {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Notification Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Fixed Field Styles */
+.fixed-field {
+    background-color: #f8f9fa;
+    border-left: 4px solid #28a745;
+}
+
+.fixed-field-badge {
+    background-color: #28a745;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.fixed-field-note {
+    color: #6c757d;
+    font-size: 11px;
+    font-style: italic;
+}
+
+.fixed-field input[readonly] {
+    background-color: #e9ecef;
+    color: #495057;
+    cursor: not-allowed;
+}
+
+.fixed-field input[disabled] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+.checkbox-item span {
+    font-size: 14px;
+    color: #333;
+}
+
+.checkbox-item:hover {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin: 0 -8px;
+}
+
+/* Dynamic Output Fields Styles */
+.output-fields-container {
+    margin-top: 10px;
+    height: auto;
+    min-height: 200px;
+    overflow: visible;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #fafafa;
+    width: 100%;
+    min-width: 150px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.output-field-item {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: stretch;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 20px; /* Increased bottom margin for better separation */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    height: auto; /* Dynamic height based on content */
+    min-height: auto; /* Allow natural height adjustment */
+}
+
+.output-field-item:hover {
+    border-color: #007bff;
+    box-shadow: 0 2px 4px rgba(0,123,255,0.1);
+}
+
+/* Field header row - checkbox, field name, and actions */
+.output-field-item .field-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 0; /* No bottom margin for fixed fields */
+}
+
+/* Make fixed fields more compact */
+.output-field-item.fixed-field {
+    padding: 10px 15px; /* Reduced padding for fixed fields */
+    gap: 10px; /* Reduced gap for fixed fields */
+}
+
+.output-field-item.fixed-field .field-header {
+    margin-bottom: 0; /* No margin for fixed fields */
+}
+
+.output-field-item .field-name {
+    flex: 1;
+    min-width: 0; /* Allow flex item to shrink */
+    display: flex;
+    justify-content: center; /* Center the input field */
+}
+
+.output-field-item .field-name input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.output-field-item .field-name input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Field description below the header */
+.output-field-item .field-description {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center the textarea */
+}
+
+.output-field-item .field-description textarea {
+    width: 100%;
+    min-height: 60px;
+    max-height: 120px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    line-height: 1.4;
+    resize: vertical;
+    overflow-y: auto;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.output-field-item .field-description textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.output-field-item .field-description textarea[readonly] {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Field hint styling */
+.output-field-item .field-hint {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #6b7280;
+    font-style: italic;
+    text-align: center;
+}
+
+.output-field-item .field-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.output-field-item .btn-remove {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.output-field-item .btn-remove:hover {
+    background: #c82333;
+}
+
+.field-hint {
+    font-size: 12px;
+    color: #6c757d;
+    font-style: italic;
+    margin-top: 2px;
+}
+
+.fixed-field-badge {
+    background: #28a745;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.field-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.field-actions .btn {
+    font-size: 14px;
+    padding: 6px 12px;
+}
+
+.btn.info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn.info:hover {
+    background-color: #138496;
+}
+
+
+
+.results-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.current-file-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.file-name {
+    font-family: monospace;
+    background: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #495057;
+}
+
+.results-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.files-info {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .files-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .file-item {
+        padding: 15px;
+    }
+}
+
+.file-item {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 18px;
+    position: relative;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.file-item:hover {
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.file-select-hint {
+    background: #007bff;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.success-message {
+    animation: slideIn 0.3s ease-out;
+}
+
+.file-item.current-file {
+    border-color: #007bff;
+    background: #f8f9ff;
+}
+
+.file-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.file-type {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.file-type.standard {
+    background: #d4edda;
+    color: #155724;
+}
+
+.file-type.timestamped {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.file-type.temporary {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.current-badge {
+    background: #007bff;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.file-name {
+    font-family: monospace;
+    font-weight: 600;
+    margin-bottom: 0;
+    word-break: break-all;
+    font-size: 14px;
+    color: #495057;
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.file-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+.file-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+}
+
+.file-info-row:last-child {
+    border-bottom: none;
+}
+
+.file-info-row:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e9ecef, transparent);
+}
+
+.file-info-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 80px;
+}
+
+.file-info-value {
+    color: #6c757d;
+    text-align: right;
+}
+
+/* Responsive design for Batch tab */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+        margin: 0 10px;
+    }
+    
+    .verification-zones {
+        flex-direction: column;
+        gap: 15px;
+        margin: 20px 0;
+        width: 100%;
+    }
+    
+    .verification-zones .zone-left,
+    .verification-zones .zone-right {
+        flex: 1;
+        max-width: 100%;
+        min-height: auto;
+    }
+    
+    .verification-group {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .parameters-section {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    /* Project Management and Knowledge Database responsive */
+    #knowledge .zone-left,
+    #knowledge .zone-right {
+        flex: 1;
+        max-width: 100%;
+        min-width: 0;
+        padding: 15px;
+    }
+    
+    #knowledge .zone-left h3,
+    #knowledge .zone-right h3 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        margin: 0 5px;
+        padding: 10px;
+    }
+    
+    .verification-zones {
+        gap: 10px;
+        margin: 15px 0;
+        width: 100%;
+    }
+    
+    .zone-left,
+    .zone-right {
+        padding: 12px;
+    }
+    
+    .verification-group {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .parameters-section {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .parameter-group {
+        margin-bottom: 12px;
+    }
+    
+    .output-field-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .output-field-item .field-name,
+    .output-field-item .field-description {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .field-actions {
+        justify-content: center;
+    }
+    
+    .verification-group h4 {
+        font-size: 14px;
+    }
+    
+    .parameters-section h5 {
+        font-size: 13px;
+    }
+    
+    /* Project Management and Knowledge Database mobile */
+    #knowledge .zone-left,
+    #knowledge .zone-right {
+        flex: 1;
+        max-width: 100%;
+        min-width: 0;
+        padding: 12px;
+    }
+    
+    #knowledge .zone-left h3,
+    #knowledge .zone-right h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    
+    #knowledge .zone-left p,
+    #knowledge .zone-right p {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+    
+    /* Project selection responsive */
+    .header {
+        min-height: 100px;
+    }
+    
+    .current-project-display {
+        position: static;
+        margin-top: 10px;
+        justify-content: center;
+        transform: none;
+    }
+    
+    .project-name-button {
+        min-width: 150px;
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+    
+    .project-dropdown {
+        max-height: 150px;
+    }
+    
+    .project-dropdown-item {
+        padding: 10px 12px;
+        font-size: 13px;
+        text-align: left;
+    }
+}
+
+/* ======================================== */
+/* BATCH TAB FIXES - PROFESSIONAL DESIGN */
+/* ======================================== */
+
+/* Ensure proper 50/50 split between Verification Parameters and Statements */
+
+.verification-zones .zone-left {
+    flex: 1;
+    max-width: 570px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.verification-zones .zone-right {
+    flex: 1;
+    max-width: 570px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Enhanced h3 styling for zone headings */
+.zone h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #1e293b;
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 12px;
+    position: relative;
+}
+
+.zone h3::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    border-radius: 2px;
+}
+
+/* Knowledge Database Zone - Full Width */
+.knowledge-zones .zone-knowledge {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+/* Project Management and Knowledge Database specific styles */
+#knowledge .verification-zones {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#knowledge .zone-left,
+#knowledge .zone-right {
+    flex: 1;
+    max-width: 570px;
+    min-width: 0;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+#knowledge .zone-left h3,
+#knowledge .zone-right h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+#knowledge .zone-left p,
+#knowledge .zone-right p {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+/* Knowledge Zones Container - Single column layout */
+.knowledge-zones {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px 0;
+    min-height: 600px;
+    width: 100%;
+}
+
+/* Verification Zones Container - Two column layout */
+.verification-zones {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    min-height: 600px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Responsive design for Knowledge Database */
+@media (max-width: 1200px) {
+    .knowledge-zones {
+        gap: 15px;
+        margin: 15px 0;
+    }
+    
+    .zone-knowledge {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .knowledge-zones {
+        gap: 10px;
+        margin: 15px 0;
+    }
+    
+    .zone-knowledge {
+        padding: 16px;
+    }
+}
+
+
+
+/* Enhanced Verification Parameters styling */
+.verification-group {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.verification-group:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+}
+
+.parameters-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f4 100%);
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.parameters-section:hover {
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.1);
+}
+
+.parameter-group {
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+}
+
+.parameter-group:hover {
+    transform: translateX(2px);
+}
+
+.parameter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.parameter-group .form-control {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+/* Ensure number inputs have same width as other form controls */
+.parameter-group input[type="number"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.parameter-group .form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.parameter-group .form-control:disabled,
+.parameter-group .form-control[readonly] {
+    background-color: #f9fafb;
+    color: #6b7280;
+    cursor: not-allowed;
+    opacity: 0.8;
+    border-color: #d1d5db;
+}
+
+.parameter-group small {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #6b7280;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* Enhanced h4 and h5 styling */
+.verification-group h4 {
+    color: #1e40af;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3b82f6;
+    position: relative;
+}
+
+.verification-group h4::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 1px;
+}
+
+.parameters-section h5 {
+    color: #374151;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.parameters-section h5::before {
+    content: '';
+    width: 4px;
+    height: 16px;
+    background: linear-gradient(180deg, #3b82f6, #60a5fa);
+    border-radius: 2px;
+}
+
+/* Enhanced form controls */
+.parameter-group .form-control {
+    border-radius: 8px;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.parameter-group .form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+
+
+.output-field-item .field-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.output-field-item .btn-remove {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.output-field-item .btn-remove:hover {
+    background: #c82333;
+}
+
+/* Professional button styling */
+.field-actions .btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.field-actions .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced field badges */
+.fixed-field-badge {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Professional spacing and typography */
+.verification-group p {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.parameter-group small {
+    color: #6b7280;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
