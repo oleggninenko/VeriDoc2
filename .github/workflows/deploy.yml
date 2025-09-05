@@ -1,0 +1,44 @@
+name: Deploy VeriDoc v2.0
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: 'your-app-name'  # Replace with your app name
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Build deployment package
+      run: |
+        # Remove unnecessary files
+        rm -rf .git .github tests archived_legacy __pycache__ .pytest_cache
+        rm -f pyproject.toml Makefile .pre-commit-config.yaml
+        rm -f *.md
+        
+        # Make startup script executable
+        chmod +x startup.sh
+        
+    - name: Deploy to Azure
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
