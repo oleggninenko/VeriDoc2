@@ -181,3 +181,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Deployment files
+startup.sh.log
+
