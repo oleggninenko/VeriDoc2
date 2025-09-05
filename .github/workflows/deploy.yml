@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: 'your-app-name'  # Replace with your app name
+  AZURE_WEBAPP_NAME: 'veridoc'  # Replace with your app name
   PYTHON_VERSION: '3.11'
 
 jobs:
