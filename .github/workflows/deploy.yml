@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: 'veridoc'  # Replace with your app name
+  AZURE_WEBAPP_NAME: 'veridoc'
   PYTHON_VERSION: '3.11'
 
 jobs:
@@ -21,22 +21,21 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-        
+    
     - name: Install dependencies
       run: |
         pip install --upgrade pip
         pip install -r requirements.txt
-        
-    - name: Build deployment package
+    
+    - name: Create startup script
       run: |
-        # Remove unnecessary files
-        rm -rf .git .github tests archived_legacy __pycache__ .pytest_cache
-        rm -f pyproject.toml Makefile .pre-commit-config.yaml
-        rm -f *.md
-        
-        # Make startup script executable
+        cat > startup.sh << 'EOF'
+        #!/bin/bash
+        cd /home/site/wwwroot
+        python -m gunicorn simple_web_interface_v2:app --bind=0.0.0.0:8000 --timeout 600
+        EOF
         chmod +x startup.sh
-        
+    
     - name: Deploy to Azure
       uses: azure/webapps-deploy@v3
       with:
