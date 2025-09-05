@@ -7,8 +7,13 @@
     },
     "PB Cyprus Case": {
       "name": "PB Cyprus Case",
-      "description": "",
+      "description": "PrivatBank vs IK, GB, TN and others",
       "created_at": 1756986911.361004
+    },
+    "PB Delaware Case": {
+      "name": "PB Delaware Case",
+      "description": "PB vs IK, GB and others",
+      "created_at": 1757076464.711118
     }
   },
   "current_project": "PB London Case"

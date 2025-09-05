@@ -131,6 +131,241 @@
     font-weight: bold;
 }
 
+/* Project Management Styles */
+.project-list-container {
+    margin-top: 20px;
+}
+
+.project-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.project-actions .btn {
+    margin: 0;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+}
+
+.project-list.reordering {
+    border-color: #2563eb;
+    background: #f0f9ff;
+}
+
+.project-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.project-item:hover {
+    border-color: #2563eb;
+    background: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+}
+
+.project-item.selected {
+    border-color: #2563eb;
+    background: #dbeafe;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.project-item.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+}
+
+.project-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.project-item-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-item-description {
+    color: #6b7280;
+    font-size: 12px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-item-date {
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+.project-item-actions {
+    display: flex;
+    gap: 5px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.project-item:hover .project-item-actions {
+    opacity: 1;
+}
+
+.project-item-actions .btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    margin: 0;
+    min-width: auto;
+}
+
+.project-name-indicator {
+    color: #10b981;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.drag-handle {
+    color: #9ca3af;
+    cursor: grab;
+    padding: 8px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.project-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-right: 12px;
+}
+
+.project-name-container {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.project-name-display {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-description-container {
+    cursor: pointer;
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.project-description {
+    color: #6b7280;
+    font-size: 12px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+
+.project-meta {
+    cursor: pointer;
+    color: #9ca3af;
+    font-size: 11px;
+    text-align: left;
+}
+
+.project-actions-buttons {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+.project-actions-buttons .btn {
+    padding: 4px 6px;
+    font-size: 12px;
+    min-width: auto;
+    width: auto;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+
+.project-list-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7280;
+}
+
+.project-list-empty-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.project-list-empty-text {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #374151;
+}
+
+.project-list-empty .btn {
+    margin: 0;
+}
+
 .content {
     padding: 20px;
 }
@@ -311,7 +546,7 @@
     font-family: inherit;
     font-size: 14px;
     resize: none;
-    height: 72px;
+    height: 120px;
     margin-bottom: 10px;
     box-sizing: border-box;
 }
@@ -378,7 +613,7 @@
     border-radius: 6px;
     padding: 15px;
     background: #f9fafb;
-    max-height: 280px;
+    max-height: 400px;
 }
 
 .message {
@@ -945,14 +1180,19 @@
 .cache-item {
     display: flex;
     align-items: center;
-    padding: 10px 16px;
+    padding: 12px 16px;
     border-bottom: 1px solid #f1f5f9;
     background: white;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .cache-item:hover {
     background-color: #f8fafc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
 }
 
 .cache-item:last-child {
@@ -965,32 +1205,43 @@
 
 .cache-name {
     flex: 1;
-    margin-right: 10px;
+    margin-right: 12px;
+    min-width: 0;
+    overflow: visible;
 }
 
 .cache-name-editable {
-    border: 1px solid transparent;
-    padding: 2px 4px;
-    border-radius: 3px;
-    background: transparent;
+    border: 1px solid #e5e7eb;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #f8fafc;
     font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
     width: 100%;
-    min-height: 20px;
+    min-height: 32px;
     resize: none;
     overflow: visible;
     word-wrap: break-word;
     white-space: pre-wrap;
+    line-height: 1.4;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
 }
 
 .cache-name-editable:hover {
-    border-color: #d1d5db;
-    background: #f9fafb;
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
 }
 
 .cache-name-editable:focus {
     border-color: #2563eb;
     background: white;
     outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    transform: translateY(-1px);
 }
 
 .cache-size {
@@ -2617,6 +2868,46 @@
         padding: 10px 12px;
         font-size: 13px;
         text-align: left;
+    }
+    
+    /* Project Management responsive */
+    .project-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .project-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .project-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .project-info {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .project-description-container {
+        width: 100%;
+    }
+    
+    .project-actions-buttons {
+        align-self: flex-end;
+        margin-right: 0;
+    }
+    
+    .project-item-actions {
+        opacity: 1;
+        align-self: flex-end;
+    }
+    
+    .project-list {
+        max-height: 300px;
     }
 }
 

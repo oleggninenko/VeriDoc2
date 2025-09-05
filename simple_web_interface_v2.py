@@ -1062,7 +1062,7 @@ async def get_main_page(request: Request):
         <div class="content">
                          <div class="tab-container">
                  <button class="tab active" data-tab="ask-me">Ask Me</button>
-                 <button class="tab" data-tab="knowledge">Database</button>
+                 <button class="tab" data-tab="knowledge">Projects</button>
                  <button class="tab" data-tab="verify">Batch</button>
                  <button class="tab" data-tab="results">Results</button>
                  <button class="tab" data-tab="technical">Technical Info</button>
@@ -1130,8 +1130,8 @@ async def get_main_page(request: Request):
                 </div>
             
             <div id="knowledge" class="tab-content">
-                <h2>📚 Database Management</h2>
-                <p>Manage projects and their isolated knowledge databases for verification.</p>
+                <h2>📚 Projects Management</h2>
+                <p>Manage projects and their isolated knowledge databases</p>
                 
                 <div class="zones-container verification-zones">
                     <!-- Project Management Zone (Left Side - 50% width) -->
@@ -4842,7 +4842,6 @@ Do you want to continue?`;
                         <div class="project-info">
                             <div class="project-name-container ${isSelected ? 'selected' : ''}" onclick="selectProject('${project.name}')">
                                 <div class="project-name-display">${project.name}</div>
-                                <div class="project-name-indicator">${isSelected ? '✓' : '○'}</div>
                             </div>
                             <div class="project-description-container" onclick="selectProject('${project.name}')">
                                 <div class="project-description">${project.description || 'No description'}</div>
@@ -4853,6 +4852,7 @@ Do you want to continue?`;
                             <button class="btn btn-edit-project" onclick="event.stopPropagation(); editProject('${project.name}')" title="Edit Project">✏️</button>
                             <button class="btn btn-delete-project" onclick="event.stopPropagation(); deleteProject('${project.name}')" title="Delete Project">🗑️</button>
                         </div>
+                        <div class="project-name-indicator">${isSelected ? '✓' : ''}</div>
                     </div>
                 `;
             }).join('');
